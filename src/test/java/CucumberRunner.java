@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions;
         features = "src/test/resources/features",
         plugin = {"json:build/cucumber.json", "pretty", "html:build/result"},
         stepNotifications = true,
-        tags = "@TC04"
+        tags = "@CCPayment"
 )
 //Run Here
 public class CucumberRunner {

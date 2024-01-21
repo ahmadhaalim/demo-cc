@@ -8,8 +8,8 @@ public class PaymentFinishedPage extends WebMethods {
     public boolean userIsInThePaymentFinishPage(WebDriver driver){
         driver.switchTo().parentFrame();
 //        switchIframe(IFRAME_PAYMENT, driver);
-        return checkIfDisplayed(PAYMENT_SUCCESS_MESSAGE, driver) &&
-                checkIfDisplayed(AMOUNT, driver) &&
-                checkIfDisplayed(RETURN_TO_MERCHANT_BUTTON, driver);
+        return waitUntilDisplayed(PAYMENT_SUCCESS_MESSAGE, driver) &&
+                waitUntilDisplayed(AMOUNT, driver) &&
+                waitUntilDisplayed(RETURN_TO_MERCHANT_BUTTON, driver);
     }
 }

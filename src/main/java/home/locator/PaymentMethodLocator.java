@@ -6,4 +6,6 @@ public interface PaymentMethodLocator {
     By TRX_AMOUNT = By.className("header-amount");
     By IFRAME_PAYMENT = By.id("snap-midtrans");
 
+    By CLOSE_MODAL_BUTTON = By.cssSelector(".close-snap-button.clickable");
+
 }

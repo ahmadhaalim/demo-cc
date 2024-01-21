@@ -8,7 +8,7 @@ import static home.locator.MerchantLocator.*;
 public class MerchantPage extends WebMethods {
     public boolean openMerchantPage(WebDriver driver) {
         driver.get("https://demo.midtrans.com/");
-        return checkIfDisplayed(BUY_NOW_BUTTON, driver);
+        return waitUntilDisplayed(BUY_NOW_BUTTON, driver);
     }
 
     public void clickOnCheckoutButton (WebDriver driver){
@@ -16,7 +16,7 @@ public class MerchantPage extends WebMethods {
     }
 
     public boolean userSeePaymentModal(WebDriver driver){
-        return checkIfDisplayed(PAYMENT_MODAL,driver);
+        return waitUntilDisplayed(PAYMENT_MODAL,driver);
     }
     public void insertDetailsOnPaymentModal (WebDriver driver, String name, String email, String phonenumber, String city, String address, String postalcode){
         typeON(PAYMENT_MODAL_NAME,name,driver);
@@ -30,6 +30,10 @@ public class MerchantPage extends WebMethods {
     public boolean userIsInTheMerchantPage(WebDriver driver){
         return waitUntilDisplayed(BUY_NOW_BUTTON,driver) &&
                 waitUntilDisplayed(TRANS_SUCCESS_NOTIF,driver);
+    }
+
+    public String errorStartingPayment(WebDriver driver){
+        return getText(ERROR_MERCHANT,driver);
     }
 
     public void clickOnCheckoutPaymentModalButton (WebDriver driver){

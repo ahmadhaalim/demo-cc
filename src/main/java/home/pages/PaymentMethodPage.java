@@ -7,8 +7,8 @@ import org.openqa.selenium.WebDriver;
 public class PaymentMethodPage extends WebMethods {
     public boolean userIsInThePaymentMethodPage (WebDriver driver){
         switchIframe(IFRAME_PAYMENT,driver);
-        boolean cctab = checkIfDisplayed(CREDIT_CARD_TAB, driver);
-        boolean amount = checkIfDisplayed(TRX_AMOUNT, driver);
+        boolean cctab = waitUntilDisplayed(CREDIT_CARD_TAB, driver);
+        boolean amount = waitUntilDisplayed(TRX_AMOUNT, driver);
         return cctab == amount;
     }
 

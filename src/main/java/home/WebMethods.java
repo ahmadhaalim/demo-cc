@@ -42,39 +42,17 @@ public class WebMethods {
     }
 
     /**
-     * Perform wait condition until the element is presented.
-     * @param id locator of element
-     * @param driver driver used on the method
-     */
-    public boolean waitUntilDisplayed(By id, WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(id));
-        return element.isDisplayed();
-    }
-
-    /**
-     * Perform waiting condition untill the element is available.
-     * @param id locator of element
-     * @param driver driver used on the method
-     */
-    public boolean waitUntilEnabled(By id, WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.pollingEvery(Duration.ofMillis(10));
-        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(id));
-        return element.isEnabled();
-    }
-
-    /**
      * Perform checking if element status is displayed and returning true condition
      * @param id locator of element
      * @param driver driver used on the method
      * @return return condition
      */
-    public boolean checkIfDisplayed(By id, WebDriver driver) {
+    public boolean waitUntilDisplayed(By id, WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(id));
         return element.isDisplayed();
     }
+
 
     /**
      * Perform checking if element status is enabled and returning true condition
@@ -82,8 +60,10 @@ public class WebMethods {
      * @param driver driver used on the method
      * @return return condition
      */
-    public boolean checkIfEnabled(By id, WebDriver driver) {
-        WebElement element = driver.findElement(id);
+    public boolean waitUntilEnabled(By id, WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.pollingEvery(Duration.ofMillis(10));
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(id));
         return element.isEnabled();
     }
 
@@ -127,7 +107,7 @@ public class WebMethods {
      * @return text of the element in string
      */
     public String getText(By id, WebDriver driver){
-        checkIfDisplayed(id, driver);
+        waitUntilDisplayed(id, driver);
         return driver.findElement(id).getText();
     }
 

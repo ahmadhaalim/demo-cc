@@ -6,6 +6,7 @@ import home.pages.*;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import home.locator.*;
 
 import static home.webdriver.WebDriverInstance.driver;
 
@@ -17,6 +18,7 @@ public class StepDefinitionsPayment {
     BankPage bankPage = new BankPage();
     PaymentFinishedPage finishedPage = new PaymentFinishedPage();
     int trxAmount;
+    int trxAmountWithoutDiscount;
 
     @Given("User already in the merchant page")
     public void userAlreadyInTheMerchantPage() {
@@ -59,6 +61,7 @@ public class StepDefinitionsPayment {
     @And("User input card Number {string}")
     public void userInputCardNumber(String cardNumber) {
         trxAmount = cardDetailsPage.getTransactionAmount(driver);
+        trxAmountWithoutDiscount = trxAmount;
         cardDetailsPage.inputCardNumber(cardNumber,driver);
     }
 
@@ -81,7 +84,6 @@ public class StepDefinitionsPayment {
 
     @And("User redirected to the issuing bank page")
     public void userRedirectedToTheIssuingBankPage() {
-//        bankJumpPage.switchToThreedsIframe(driver);
         Assert.assertTrue(bankJumpPage.userIsInBankJumpPage(driver));
 //        bankJumpPage.clickContinueButton(driver);
         Assert.assertTrue(bankPage.userIsInTheIssuingBankPage(driver));
@@ -124,6 +126,111 @@ public class StepDefinitionsPayment {
 
     @Then("User get error for not inputting the email")
     public void userGetErrorForNotInputtingTheEmail() {
+        Assert.assertEquals("Sorry, something went wrong.",merchantPage.errorStartingPayment(driver));
+    }
 
+    @And("User continue payment until payment method page")
+    public void userContinuePaymentUntilPaymentMethodPage() {
+
+        merchantPage.insertDetailsOnPaymentModal(driver,"name","halimprabowo@xmail.com","6271222222",
+                "city","address","postalcode");
+        merchantPage.clickOnCheckoutPaymentModalButton(driver);
+        Assert.assertTrue(methodPage.userIsInThePaymentMethodPage(driver));
+    }
+
+    @And("User input card creds card= {string} cvv {string} expiration date {string}")
+    public void userInputCardCredsCardCvvExpirationDate(String card, String cvvNumber, String expiryDt) {
+        trxAmount = cardDetailsPage.getTransactionAmount(driver);
+        trxAmountWithoutDiscount = trxAmount;
+        cardDetailsPage.inputCardNumber(card,driver);
+        cardDetailsPage.inputExpiryDt(expiryDt,driver);
+        cardDetailsPage.inputCvv(cvvNumber,driver);
+    }
+
+    @When("User input the wrong OTP {string}")
+    public void userInputTheWrongOTP(String otp) {
+        bankPage.inputTheOtp(otp,driver);
+    }
+
+    @And("User click back button")
+    public void userClickBackButton() {
+        cardDetailsPage.waitUntilEnabled(CreditCardDetailsLocator.BACK_BUTTON_ERROR_MODAL,driver);
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.BACK_BUTTON_ERROR_MODAL,driver);
+    }
+
+    @And("User Redirected to Payment detail Page")
+    public void userRedirectedToPaymentDetailPage() {
+        driver.switchTo().parentFrame();
+        Assert.assertEquals("Payment declined by bank",cardDetailsPage.errorTitle(driver));
+        Assert.assertEquals("Please use another card or change payment method. (Error code: )",cardDetailsPage.errorMessage(driver));
+    }
+
+    @Then("User back to merchant page with error notif")
+    public void userBackToMerchantPageWithErrorNotif() {
+        driver.switchTo().defaultContent();
+        Assert.assertEquals("Sorry, something went wrong.",merchantPage.errorStartingPayment(driver));
+    }
+
+    @When("User click resend button")
+    public void userClickResendButton() {
+        bankPage.clickOn(IssuingBankPageLocator.RESEND_BUTTON,driver);
+    }
+
+    @Then("User still in the issuing bank page")
+    public void userStillInTheIssuingBankPage() {
+        Assert.assertTrue(bankPage.userIsInTheIssuingBankPage(driver));
+        Assert.assertEquals(trxAmount,bankPage.getTrxAmount(driver)/100);
+    }
+
+    @When("User click cancel button")
+    public void userClickCancelButton() {
+        bankPage.clickOn(IssuingBankPageLocator.CANCEL_BUTTON,driver);
+    }
+
+    @When("User click close payment method modal")
+    public void userClickClosePaymentMethodModal() {
+        methodPage.clickOn(PaymentMethodLocator.CLOSE_MODAL_BUTTON,driver);
+    }
+
+    @Then("User will see payment method modal closed")
+    public void userWillSeePaymentMethodModalClosed() {
+        Assert.assertTrue(merchantPage.waitUntilInvisible(MerchantLocator.PAYMENT_MODAL,driver));
+    }
+
+    @And("User can click buy now button")
+    public void userCanClickBuyNowButton() {
+        driver.switchTo().parentFrame();
+        Assert.assertTrue(merchantPage.waitUntilEnabled(MerchantLocator.BUY_NOW_BUTTON, driver));
+        merchantPage.clickOn(MerchantLocator.BUY_NOW_BUTTON,driver);
+        Assert.assertTrue(merchantPage.waitUntilDisplayed(MerchantLocator.PAYMENT_MODAL,driver));
+    }
+
+    @And("User click proceed payment without quota")
+    public void userClickProceedPaymentWithoutQuota() {
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.CONTINUE_BUTTON_PROMO_NOT_USED,driver);
+    }
+
+    @And("User redirected to the issuing bank page without quota")
+    public void userRedirectedToTheIssuingBankPageWithoutQuota() {
+        Assert.assertTrue(bankJumpPage.userIsInBankJumpPage(driver));
+//        bankJumpPage.clickContinueButton(driver);
+        Assert.assertTrue(bankPage.userIsInTheIssuingBankPage(driver));
+        Assert.assertEquals(trxAmountWithoutDiscount,bankPage.getTrxAmount(driver)/100);
+    }
+
+    @When("User click back payment")
+    public void userClickBackPayment() {
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.BACK_BUTTON_PROMO_USED,driver);
+    }
+
+    @When("User click return to merchant button")
+    public void userClickReturnToMerchantButton() {
+        finishedPage.clickOn(FinishPaymentRedirectPageLocator.RETURN_TO_MERCHANT_BUTTON,driver);
+    }
+
+    @Then("User will be back in merchant page with success message")
+    public void userWillBeBackInMerchantPageWithSuccessMessage() {
+        driver.switchTo().parentFrame();
+        Assert.assertTrue(merchantPage.userIsInTheMerchantPage(driver));
     }
 }

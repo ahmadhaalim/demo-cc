@@ -15,4 +15,5 @@ public interface MerchantLocator {
     By PAYMENT_MODAL_CHECKOUT_BUTTON = By.xpath("//div[contains(text(),'CHECKOUT') and @class='cart-checkout']");
     By PAYMENT_MODAL_CANCEL_BUTTON = By.xpath("//div[contains(text(),'cancel') and @class='cancel-btn']");
     By TRANS_SUCCESS_NOTIF = By.className("trans-status");
+    By ERROR_MERCHANT = By.cssSelector("span[data-reactid='.0.0.0.2.0.1.0.0:0']");
 }

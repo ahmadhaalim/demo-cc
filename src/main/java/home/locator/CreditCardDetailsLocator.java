@@ -18,4 +18,9 @@ public interface CreditCardDetailsLocator{
             "/div[@class='promo-block']/div[3]/span[1]");
     By TRX_AMOUNT = By.xpath("//div[@class='header-amount']");
     By PAY_BUTTON_CC = By.className("card-pay-button-part");
+    By ERROR_MESSAGE_FAILED_BANK = By.className("cancel-modal-subtitle");
+    By ERROR_TITLE_FAILED_BANK = By.className("cancel-modal-title");
+    By BACK_BUTTON_ERROR_MODAL = By.cssSelector("button[class='btn full primary']");
+By BACK_BUTTON_PROMO_USED = By.cssSelector(".btn.danger.short");
+By CONTINUE_BUTTON_PROMO_NOT_USED = By.cssSelector(".btn.primary.short");
 }

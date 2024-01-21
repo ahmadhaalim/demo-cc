@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 public class CreditCardDetailsPage extends WebMethods {
 
     public boolean userIsInTheCreditCardDetailsPage(WebDriver driver){
-        return checkIfDisplayed(CREDIT_CARD_INPUT,driver)==checkIfDisplayed(CREDIT_CARD_MODAL,driver);
+        return waitUntilDisplayed(CREDIT_CARD_INPUT,driver)==waitUntilDisplayed(CREDIT_CARD_MODAL,driver);
     }
 
     public void inputCardNumber(String cardNumber, WebDriver driver){
@@ -61,6 +61,12 @@ public class CreditCardDetailsPage extends WebMethods {
     }
     public boolean payLoadingInfo(WebDriver driver){
         return  waitUntilDisplayed(By.className("centerload"), driver) && waitUntilInvisible(By.className("centerload"), driver);
+    }
 
+    public String errorTitle (WebDriver driver){
+        return getText(ERROR_TITLE_FAILED_BANK, driver);
+    }
+    public String errorMessage (WebDriver driver){
+       return getText(ERROR_MESSAGE_FAILED_BANK, driver);
     }
 }
