@@ -13,7 +13,10 @@ import java.time.Duration;
 
 
 public class WebMethods {
-    final int defaultDuration = 9;
+    /**
+     * used for default duration of waiting before finding element
+     */
+    final int defaultDuration = 10;
 
     /**
      * Perform action to click button or clickable element,
@@ -45,6 +48,7 @@ public class WebMethods {
      * Perform checking if element status is displayed and returning true condition
      * @param id locator of element
      * @param driver driver used on the method
+     * @param duration used on the method as how long driver should wait
      * @return return condition
      */
     public boolean waitUntilDisplayed(By id, WebDriver driver, int duration) {
@@ -60,8 +64,8 @@ public class WebMethods {
      * @return return condition
      */
     public boolean waitUntilEnabled(By id, WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.pollingEvery(Duration.ofMillis(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(defaultDuration));
+        wait.pollingEvery(Duration.ofMillis(defaultDuration));
         WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(id));
         return element.isEnabled();
     }
@@ -72,7 +76,7 @@ public class WebMethods {
      * @param id locator of element
      */
     public boolean waitUntilInvisible(By id, WebDriver driver){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(defaultDuration));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(id));
         return true;
     }
@@ -132,6 +136,11 @@ public class WebMethods {
         return isSelected.isSelected();
     }
 
+    /**
+     * Perform scroll to element
+     * @param id locator of the element
+     * @param driver driver used on the method
+     */
     public void scrollToView(By id, WebDriver driver){
         WebElement element = driver.findElement(id);
         Actions actions = new Actions(driver);
@@ -139,11 +148,20 @@ public class WebMethods {
         actions.perform();
     }
 
+    /**
+     * Perform scroll using js script
+     * @param id locator of the element
+     * @param driver driver used on the method
+     */
     public void jsScrollToView (By id, WebDriver driver){
         WebElement element = driver.findElement(id);
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
     }
 
+    /**
+     *   Simulate 2g network on driver
+     *   @param driver driver used on the method
+     */
     public void slowTestToCheckAvailablelity (WebDriver driver){
         DevTools devTools = ((ChromeDriver)driver).getDevTools();
         devTools.createSession();
@@ -156,6 +174,10 @@ public class WebMethods {
                         Optional.of(ConnectionType.CELLULAR2G)));
            }
 
+    /**
+     * Perform reset on driver network speed
+     * @param driver driver used on the method
+     */
     public void resetDriverTestNetwork(WebDriver driver){
         DevTools devTools = ((ChromeDriver)driver).getDevTools();
         devTools.createSession();
