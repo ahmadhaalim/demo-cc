@@ -13,6 +13,7 @@ import java.time.Duration;
 
 
 public class WebMethods {
+    final int defaultDuration = 9;
 
     /**
      * Perform action to click button or clickable element,
@@ -21,9 +22,8 @@ public class WebMethods {
      * @param driver driver used on the method
      */
     public void clickOn(By id, WebDriver driver) {
-        waitUntilEnabled(id, driver);
-        waitUntilDisplayed(id,driver);
-        WebElement button = driver.findElement(id);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(defaultDuration));
+        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(id));
         button.click();
     }
 
@@ -35,7 +35,7 @@ public class WebMethods {
      * @param text user input text
      */
     public void typeON(By id, String text, WebDriver driver) {
-        waitUntilDisplayed(id, driver);
+        waitUntilDisplayed(id, driver, defaultDuration);
         WebElement field = driver.findElement(id);
         field.clear();
         field.sendKeys(text);
@@ -47,12 +47,11 @@ public class WebMethods {
      * @param driver driver used on the method
      * @return return condition
      */
-    public boolean waitUntilDisplayed(By id, WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public boolean waitUntilDisplayed(By id, WebDriver driver, int duration) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(duration));
         WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(id));
         return element.isDisplayed();
     }
-
 
     /**
      * Perform checking if element status is enabled and returning true condition
@@ -95,7 +94,7 @@ public class WebMethods {
      * @param id locator of element
      */
     public void pressEnter(By id, WebDriver driver){
-        waitUntilDisplayed(id, driver);
+        waitUntilDisplayed(id, driver, defaultDuration);
         WebElement element = driver.findElement(id);
         element.sendKeys(Keys.ENTER);
     }
@@ -107,7 +106,7 @@ public class WebMethods {
      * @return text of the element in string
      */
     public String getText(By id, WebDriver driver){
-        waitUntilDisplayed(id, driver);
+        waitUntilDisplayed(id, driver, defaultDuration);
         return driver.findElement(id).getText();
     }
 
@@ -156,7 +155,6 @@ public class WebMethods {
                 Network.emulateNetworkConditions(false, 100, 10000, 10000,
                         Optional.of(ConnectionType.CELLULAR2G)));
            }
-
 
     public void resetDriverTestNetwork(WebDriver driver){
         DevTools devTools = ((ChromeDriver)driver).getDevTools();

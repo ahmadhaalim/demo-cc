@@ -49,7 +49,7 @@ public class StepDefinitionsPayment {
 
     @And("User is in the payment method page")
     public void userIsInThePaymentMethodPage() {
-        Assert.assertTrue(methodPage.userIsInThePaymentMethodPage(driver));
+        Assert.assertTrue(methodPage.userIsInThePaymentMethodPage(driver, true));
 
     }
 
@@ -117,7 +117,7 @@ public class StepDefinitionsPayment {
     }
 
     @And("User select proceed with selected promo {string}")
-    public void userSelectProceedWithSelectedPromo(String promo) throws InterruptedException {
+    public void userSelectProceedWithSelectedPromo(String promo) {
         int promoAmount = cardDetailsPage.selectPromo(promo,driver);
         int trxAmountAfterDiscount = cardDetailsPage.getTransactionAmount(driver);
         Assert.assertEquals(trxAmount-promoAmount,trxAmountAfterDiscount);
@@ -135,7 +135,7 @@ public class StepDefinitionsPayment {
         merchantPage.insertDetailsOnPaymentModal(driver,"name","halimprabowo@xmail.com","6271222222",
                 "city","address","postalcode");
         merchantPage.clickOnCheckoutPaymentModalButton(driver);
-        Assert.assertTrue(methodPage.userIsInThePaymentMethodPage(driver));
+        Assert.assertTrue(methodPage.userIsInThePaymentMethodPage(driver,true));
     }
 
     @And("User input card creds card= {string} cvv {string} expiration date {string}")
@@ -202,12 +202,12 @@ public class StepDefinitionsPayment {
         driver.switchTo().parentFrame();
         Assert.assertTrue(merchantPage.waitUntilEnabled(MerchantLocator.BUY_NOW_BUTTON, driver));
         merchantPage.clickOn(MerchantLocator.BUY_NOW_BUTTON,driver);
-        Assert.assertTrue(merchantPage.waitUntilDisplayed(MerchantLocator.PAYMENT_MODAL,driver));
+        Assert.assertTrue(merchantPage.waitUntilDisplayed(MerchantLocator.PAYMENT_MODAL,driver,10));
     }
 
     @And("User click proceed payment without quota")
     public void userClickProceedPaymentWithoutQuota() {
-        cardDetailsPage.clickOn(CreditCardDetailsLocator.CONTINUE_BUTTON_PROMO_NOT_USED,driver);
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.CONFIRM_BUTTON_MODAL,driver);
     }
 
     @And("User redirected to the issuing bank page without quota")
@@ -232,5 +232,34 @@ public class StepDefinitionsPayment {
     public void userWillBeBackInMerchantPageWithSuccessMessage() {
         driver.switchTo().parentFrame();
         Assert.assertTrue(merchantPage.userIsInTheMerchantPage(driver));
+    }
+
+    @When("User click cancel button on payment detail modal")
+    public void userClickCancelButtonOnPaymentDetailModal() {
+        merchantPage.waitUntilDisplayed(MerchantLocator.PAYMENT_MODAL,driver,10);
+        merchantPage.clickOn(MerchantLocator.PAYMENT_MODAL_CANCEL_BUTTON,driver);
+    }
+
+    @When("User click back button on credit card details page")
+    public void userClickBackButtonOnCreditCardDetailsPage() {
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.BACK_BUTTON_TO_PAYMENT_METHOD,driver);
+    }
+
+    @And("User click yes cancel button")
+    public void userClickYesCancelButton() {
+        cardDetailsPage.waitUntilEnabled(CreditCardDetailsLocator.BACK_BUTTON_PROMO_USED,driver);
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.BACK_BUTTON_PROMO_USED,driver);
+    }
+
+    @And("User click back on confirmation modal")
+    public void userClickBackOnConfirmationModal() {
+        cardDetailsPage.waitUntilEnabled(CreditCardDetailsLocator.CONFIRM_BUTTON_MODAL,driver);
+        cardDetailsPage.clickOn(CreditCardDetailsLocator.CONFIRM_BUTTON_MODAL,driver);
+    }
+
+    @Then("User is back in the payment method page")
+    public void userIsBackInThePaymentMethodPage() {
+        Assert.assertTrue(methodPage.userIsInThePaymentMethodPage(driver, false));
+
     }
 }

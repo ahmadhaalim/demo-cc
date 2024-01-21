@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 public class CreditCardDetailsPage extends WebMethods {
 
     public boolean userIsInTheCreditCardDetailsPage(WebDriver driver){
-        return waitUntilDisplayed(CREDIT_CARD_INPUT,driver)==waitUntilDisplayed(CREDIT_CARD_MODAL,driver);
+        return waitUntilDisplayed(CREDIT_CARD_INPUT,driver,10)==waitUntilDisplayed(CREDIT_CARD_MODAL,driver,10);
     }
 
     public void inputCardNumber(String cardNumber, WebDriver driver){
@@ -60,7 +60,7 @@ public class CreditCardDetailsPage extends WebMethods {
 
     }
     public boolean payLoadingInfo(WebDriver driver){
-        return  waitUntilDisplayed(By.className("centerload"), driver) && waitUntilInvisible(By.className("centerload"), driver);
+        return  waitUntilDisplayed(By.className("centerload"), driver,20) && waitUntilInvisible(By.className("centerload"), driver);
     }
 
     public String errorTitle (WebDriver driver){

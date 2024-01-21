@@ -22,5 +22,6 @@ public interface CreditCardDetailsLocator{
     By ERROR_TITLE_FAILED_BANK = By.className("cancel-modal-title");
     By BACK_BUTTON_ERROR_MODAL = By.cssSelector("button[class='btn full primary']");
 By BACK_BUTTON_PROMO_USED = By.cssSelector(".btn.danger.short");
-By CONTINUE_BUTTON_PROMO_NOT_USED = By.cssSelector(".btn.primary.short");
+By CONFIRM_BUTTON_MODAL = By.cssSelector(".btn.primary.short");
+By BACK_BUTTON_TO_PAYMENT_METHOD = By.cssSelector("img[alt='back']");
 }

@@ -84,7 +84,7 @@ Feature: Payment with CC
     Then User back to merchant page with error notif
 
   @TC012
-  Scenario: Test bank payment resend otp button
+  Scenario: Test payment resend otp button in issuing bank page
     Given User click the buy button
     And User continue payment until payment method page
     And User click the credit card payment method
@@ -96,7 +96,7 @@ Feature: Payment with CC
     Then User still in the issuing bank page
 
   @TC013
-  Scenario: Payment cancel button in issuing bank page
+  Scenario: Test payment cancel button in issuing bank page
     Given User click the buy button
     And User continue payment until payment method page
     And User click the credit card payment method
@@ -159,4 +159,27 @@ Feature: Payment with CC
     Then User will be back in merchant page with success message
 
   @TC018
-  Scenario: Payment with user
+  Scenario: Cancel on payment modal on info details
+    Given User click the buy button
+    And User is in the payment detail modal
+    When User click cancel button on payment detail modal
+    Then User will see payment method modal closed
+    And User can click buy now button
+
+  @TC019
+  Scenario: Test continuing Back button functionality on card details page
+    Given User click the buy button
+    And User continue payment until payment method page
+    And User click the credit card payment method
+    When User click back button on credit card details page
+    And User click yes cancel button
+    Then User is back in the payment method page
+
+  @TC020
+  Scenario: Test cancelling on Back button functionality for card details page
+    Given User click the buy button
+    And User continue payment until payment method page
+    And User click the credit card payment method
+    When User click back button on credit card details page
+    And User click back on confirmation modal
+    Then User is in the credit card details info

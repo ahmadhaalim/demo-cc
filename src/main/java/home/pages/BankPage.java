@@ -6,11 +6,11 @@ import static home.locator.IssuingBankPageLocator.*;
 
 public class BankPage extends WebMethods {
     public boolean userIsInTheIssuingBankPage(WebDriver driver){
-        return waitUntilDisplayed(OK_BUTTON,driver)
-                && waitUntilDisplayed(CANCEL_BUTTON,driver)
-                && waitUntilDisplayed(RESEND_BUTTON, driver)
-                && waitUntilDisplayed(AMOUNT_VALUE, driver)
-                && waitUntilDisplayed(PASSWORD_FIELD, driver);
+        return waitUntilDisplayed(OK_BUTTON,driver,5)
+                && waitUntilDisplayed(CANCEL_BUTTON,driver,5)
+                && waitUntilDisplayed(RESEND_BUTTON, driver,5)
+                && waitUntilDisplayed(AMOUNT_VALUE, driver,5)
+                && waitUntilDisplayed(PASSWORD_FIELD, driver,5);
     }
 
     public int getTrxAmount(WebDriver driver){
