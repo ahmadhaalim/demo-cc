@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import home.WebMethods;
 import static home.locator.MerchantLocator.*;
 
-import java.sql.Driver;
 
 public class MerchantPage extends WebMethods {
     public boolean openMerchantPage(WebDriver driver) {

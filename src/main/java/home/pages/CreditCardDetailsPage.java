@@ -29,7 +29,7 @@ public class CreditCardDetailsPage extends WebMethods {
         String trxAmount = getText(TRX_AMOUNT,driver).replaceAll("[^0-9]","");
         return Integer.parseInt(trxAmount);
     }
-    public int selectPromo(String promo, WebDriver driver) throws InterruptedException {
+    public int selectPromo(String promo, WebDriver driver){
         String promoAmount = "0";
         switch (promo) {
             case "flash":
